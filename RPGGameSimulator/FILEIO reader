@@ -1,0 +1,156 @@
+//Name:Christopher Cui
+//Student ID: 260867703
+import java.util.ArrayList;
+import java.io.*;
+public class FileIO {
+  
+  public FileIO() { 
+    
+  }
+  public static Character readCharacter(String filename) throws IOException{
+    
+    FileReader fr = new FileReader(filename);
+    BufferedReader br = new BufferedReader(fr);
+    //bw.write
+    //loop while the line just read is not null
+    String currentLine;
+    String name= "";
+    double attackVal= 0.0;
+    double maxHealth=0.0;
+    int numWins = 0;
+    Character newChar;
+    //4 interations, each iteration reading one line. since the character file only has 4 lines , set i<=4
+    
+    for (int i=0; i<=3;i++){
+      currentLine=br.readLine();
+      if (i==0){
+        
+        name=currentLine;
+      }
+      if (i==1){
+        
+        attackVal = Double.parseDouble(currentLine);
+      }
+      if (i==2){
+        
+        maxHealth = Double.parseDouble(currentLine);
+      }
+      if (i==3){
+        
+        numWins = Integer.parseInt(currentLine);
+      }
+    }
+    
+    
+    br.close();
+    fr.close();
+    ArrayList<Spell> charSpells= new ArrayList<Spell>();
+    newChar = new Character(name,attackVal,maxHealth,numWins,charSpells);
+    
+    return newChar;
+    
+  }
+  
+  public static ArrayList<Spell> readSpells(String fileName){
+
+        //an ArrayList of Spell is initialzied
+        ArrayList<Spell> arrayList = new ArrayList<Spell>();
+        
+        try
+        {
+          FileReader fr = new FileReader(fileName);
+          BufferedReader rdr = new BufferedReader(fr); 
+          //a String currenLine is assigned the line in BufferedReader reader
+          String currentLine = rdr.readLine();
+          //states that while currentLine is not equal to null, it runs thru the file
+          while (currentLine != null)
+          {
+            //split crrentline by each tab and make a string array
+            String[] spellArray = currentLine.split("\t");
+            
+            //a String name is assigned the 0 position of spellArray
+            String name = spellArray[0];
+            
+            //a double attackValue is assigned the 1 position of spellArray,  parsed to a double
+            //a double maxDamage is assigned the 2 position of spellArray is parsed to a double
+            double maxDamage = Double.parseDouble(spellArray[2]);
+            double minDamage = Double.parseDouble(spellArray[1]);
+                        
+            
+            double chanceOfSuccess = Double.parseDouble(spellArray[3]);
+            //a new Spell called spell is created, taking min max and chanceOfSuccess as input
+           
+            Spell spell = new Spell(name, minDamage, maxDamage, chanceOfSuccess);
+            //the Spell, spell, is then added to the ArrayList of class Spell, arrayList
+            arrayList.add(spell);
+            //currentLine is then assigned the next line from the file
+            currentLine = rdr.readLine();
+          }
+            fr.close();
+            rdr.close(); 
+        }
+        //a catch block is used to catch the FileNotFoundException 
+        catch (FileNotFoundException e)
+        {
+            //throws an IllegalArgumentException with the following message
+            throw new IllegalArgumentException("File not found:" + fileName);
+        }
+        //a catch block is used to catch the IOException 
+        catch (IOException e)
+        {
+            //throws an IllegalArgumentExcpetion with the following message
+            throw new IllegalArgumentException("Error with File:" + fileName);
+        }
+        return arrayList; 
+    }
+ public static void writeCharacter(Character chr, String fileName)
+    {  
+        try
+        {
+          //initialize filewriter and buffered writer
+            FileWriter fw = new FileWriter(fileName);
+            BufferedWriter wrt = new BufferedWriter(fw);
+            
+            //by the getName method in the character class, and skips to the next line
+            
+            wrt.write(chr.getName() + "\n");
+            //then gets the attack value of the character,
+            //using the getAttack method, and skips to the next line
+            wrt.write(chr.getAttackValue() + "\n");
+            //then gets the current health of the character,
+            //using the getmaxhealth get the chars max health
+            wrt.write(chr.getMaxHealth() +"\n");
+            
+            //then gets the number of wins of the character,
+            //using the getWins 
+            wrt.write(chr.getNumWins() + "\n");
+            
+            //the FileWriter fw and BufferredWriter writer are then closed
+            wrt.close();
+            fw.close();
+            System.out.println();
+            System.out.println("Successfully wrote to the file: "+ fileName);
+        }
+        catch (IOException e)
+        {
+            //an IllegalArgumentExcpetion is thrown with the following message
+            throw new IllegalArgumentException("Wasnt able to write to " + fileName);
+        }
+    }
+
+ 
+  public static void main(String[] args) { 
+    try{
+    readCharacter("player.txt");
+    }catch(IOException e){
+      System.out.println("something went wrong");
+    }
+    
+  }
+  
+  /* ADD YOUR CODE HERE */
+  
+}
+
+
+

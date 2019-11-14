@@ -1,0 +1,92 @@
+//name: Christopher Cui
+//Student id: 260867703
+
+import java.util.Random;
+public class Spell
+{
+    //the following are private attributes of the class Spell
+    //a String for the name, a double for the minimum damage,
+    //a double for the maximum damage, and a double for the chance of success
+    private String name;
+    private double minDamage;
+    private double maxDamage;
+    private double chanceSuccess;
+    //a constructor Spell, that takes as iput a String name, a double minDamage,
+    //a double maxDamage, and a double chanceSuccess
+    public Spell(String name, double minDamage, double maxDamage, double chanceSuccess)
+    {
+        //a this keyword for the variable name is used
+        //to intialize String variable, name
+        this.name = name;
+        //a this keyword for the variable minDamage is used
+        //to intialize double variable, minDamage
+        this.minDamage = minDamage;
+        
+        
+        this.maxDamage = maxDamage;
+        //a this keyword for the variable chanceSuccess is used
+        //to intialize double variable, chanceSuccess
+        this.chanceSuccess = chanceSuccess;
+        
+        if (minDamage < 0)
+        {
+            //an IllegalArgugmentException is thrown that states the following message
+            throw new IllegalArgumentException("Minimum Damage is lessthan zero!");
+        }
+        //otheriwse, is minDamage is greater than maxDamage
+        else if (minDamage > maxDamage)
+        {
+            //an IllegalArgugmentException is thrown that states the following message
+            throw new IllegalArgumentException("Minimum Damageis greater than Maximum Damage!");
+        }
+        //else,if chanceSuccess is less than 0 OR greater than 1
+        else if (chanceSuccess < 0 || chanceSuccess > 1)
+        {
+            //an IllegalArgugmentException is thrown that states the following message
+            throw new IllegalArgumentException("Error in number of Chance ofSuccess!");
+        }
+    }
+    //a method getName which returns the name of the spell 
+    public String getName(){
+    
+        //returns the name of the spell
+        return this.name;
+    }
+    //a  getMacgicDamage returns a double
+    public double getMagicDamage(int seed)
+    {
+      //numberGenerator initialized
+      Random numGenerator = new Random(seed);
+      //a double called randNum given a random double number 
+      double randNum = numGenerator.nextDouble();
+
+      //a double minMaxDamage is also given random number betwen the minimum and maximum
+      double betweenMinMax = numGenerator.nextDouble() *(maxDamage-minDamage) + minDamage;
+      
+      // if double in randnum is more than chanceSuccess
+      if (randNum>this.chanceSuccess){
+       
+        return 0;
+      }
+      else{
+        return betweenMinMax;
+      }
+    }
+    
+    //a method toString returns a String
+    
+    public String toString()
+    {
+      
+      String b = (" Damage: " + minDamage +"-" + maxDamage);
+      String a = ("Name:" + name);
+      
+      //chanceSuccess multiplied by 100 to get the percentage
+      String c = (" Chance: " + chanceSuccess*100 + "%");
+      //return the string
+      return a + b + c;
+    }
+    
+      public static void main(String[] args) { 
+  }
+}

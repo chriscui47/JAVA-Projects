@@ -1,0 +1,173 @@
+//Student name:Christopher cui
+//Student id: 260867703
+import java.util.Arrays;
+public class ExamGrading {
+  
+  
+  public static void main(String[] args) { 
+    char[][] responses = {{'C', 'A', 'B', 'B', 'C','A'}, {'A', 'A', 'B', 'B', 'B', 'B'},
+{'C', 'B', 'A', 'B', 'C', 'A'}, {'A', 'B', 'A', 'B', 'B', 'B'}};
+    char[] solutions = {'C', 'A', 'B', 'B', 'C', 'C'};
+    System.out.println(Arrays.toString(gradeAllStudents(responses,solutions)));
+    
+    char[] responseOne = {'A','B','C','D','B','A'};
+    char[] responseTwo = {'A','B','D','B','B','A'};
+    
+    char[] solution = {'C','C','C','D','A','A'};
+    
+    char[][] response= {{'C','A','B','B','C','A'},{'A','A','B','B','B','B'},{'C','B','A','B','C','A'}, {'A','B','A','B','B','B'}};
+    char[] solutionsD= {'C','A','B','B','C','C'};
+    
+    System.out.println(Arrays.deepToString(findSimilarAnswers(response,solutionsD,3)));
+  }
+  
+  
+  /* ADD YOUR CODE HERE */
+  public static double[] gradeAllStudents(char[][] responses, char[] solutions){
+    
+    
+    //since each question is worth 1 mark, total marks on exam is length of solutions
+    int totalPoints= solutions.length;
+    //create array of all the averages for each student
+    double[] grades = new double[responses.length];
+    //the average of each student in percentage
+    double avgPercent;
+    //marks, each question is one point
+    int marks;
+    
+    for(int i=0;i<responses.length;i++){
+      //initialize marks and avgPercent for each student
+      marks = totalPoints;
+      avgPercent=0;
+      
+      //Loop for conflicting lengths between number responses and questions. Count amount of responses each student gives, and throw error if it does not match length of solutions
+      for (int z =0; z<responses.length;z++){
+        if (responses[z].length!=solutions.length){
+          throw new IllegalArgumentException("Student: "+(z+1)+" responses does not match the number of questions of the exam. Student gave " + responses[z].length+"answers, but there were " +solutions.length+"questions.");
+        }
+        
+      }
+      
+      
+      
+      
+      for(int n = 0;n<responses[i].length;n++){
+        //subtract 1 point off of total mark for every question thats not the same 
+        if (responses[i][n]!=solutions[n]){
+          marks--;
+        }
+      }
+      //calculate the average percent for this student by dividng marks over total amount of questions
+      avgPercent= ((double)marks/totalPoints)*100;
+      
+      //populate the array of grades 
+      grades[i]=avgPercent;
+      
+    }
+    
+
+    return grades;
+    
+  }
+  //1. Write a method numWrongSimilar() that takes as input two char arrays and char array of solutions. Method returns number of wrong answers students had the same 
+  public static int numWrongSimilar(char[] s1, char[] s2, char[] solutions){
+    
+    if (s1.length!= s2.length || s1.length!= solutions.length || s2.length!=solutions.length){
+      throw new IllegalArgumentException("Both student responses should have the same length as each other and as the solutions");
+    }
+    
+    //create int array of 0 and 1s for each student where 0 represents wrong answers and 1 represnts right
+    int wrongCount = 0;
+    int[] wrongAns1= new int[s1.length];
+    int[] wrongAns2= new int[s2.length];
+    
+    //check if any of the answers for each student are wrong, if they are, set the value to 0 in array wrongAns1 or wrongAns2. Set to 1 if its correct
+    for(int i =0;i<s1.length;i++){
+      if (s1[i]!=solutions[i]){
+        wrongAns1[i]=0;
+      }else if (s1[i]==solutions[i]){
+        
+        wrongAns1[i]=1;
+      }
+      if (s2[i]!=solutions[i]){
+        wrongAns2[i]=0;
+      }else if (s2[i]==solutions[i]){
+        wrongAns2[i]=1;
+      }
+      
+    }
+    //check if both students have same wrong answer, if so, add 1 to wrongCount
+    for (int n =0;n<solutions.length;n++){
+      if ( (wrongAns1[n]==0 && wrongAns2[n] ==0) && (s1[n]==s2[n])    ){
+        wrongCount++;
+      }
+    }
+    return wrongCount;
+    
+    
+  }
+  public static int numMatches(char[][] allResponses, char[] solutions, int index,int threshold){
+    //intialize counter for students that meet threshold
+    int matchCounter =0;
+    //numWrongSimilar(char[] s1, char[] s2, char[] solutions)
+    
+    //compare the answers of student at index to answer of student at i.
+    for (int i =0;i<allResponses.length;i++){
+      
+      //iterate through every student EXCEPT student index
+      if(i==index){
+        continue;
+      }
+        //use numWrongSimilar, comparing similar wrong answers between student at i and student index
+      if ( numWrongSimilar(allResponses[index] ,allResponses[i] ,solutions)>=threshold){
+        matchCounter++;
+      }
+    }
+    return matchCounter;
+    
+    
+  }
+  public static int[][] findSimilarAnswers(char[][] responses, char[] solution, int minAns){
+    //create array where each index represents a student, and each sub array slists the indices of all students who have similar wrong answers to the student at that index
+    int[][] simAnswersArray= new int[responses.length][];
+    
+    for (int i=0;i<simAnswersArray.length;i++){
+      //determine the length of each subarray in simAnswersArray 
+      simAnswersArray[i] = new int[numMatches(responses,solution,i,minAns)];
+      //populate subarray of simAnswersArray
+      //first student
+      
+      //iterate thru each element in the subarray of simAnswersArray, each element corresponds to a student that has similar answers to student at index of simAnswersArray
+      for (int m=0; m <simAnswersArray[i].length; m++) {//edit this loop
+        
+        
+        for( int n=0; n<responses.length;n++){
+          //make sure student doesnt compare himself to himself
+         
+          if (n!=i){
+            //If student we are comparing has similar answers, add it to the student's subarray
+            if (numWrongSimilar(responses[i],responses[n],solution) >= minAns  ){
+             
+              simAnswersArray[i][m]= n;
+              m++;
+              
+              
+            }
+          }
+        }
+        
+      }
+      
+    }
+    
+    return simAnswersArray;
+    
+  }
+  
+
+  
+  
+  
+
+}
+

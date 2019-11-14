@@ -1,0 +1,205 @@
+//Fill in your name and student number
+//Name: Christopher Cui
+//Student Number: 260867703
+import java.util.Arrays;
+import java.util.*;  
+
+// do NOT touch the following import statement
+import java.util.Random;
+
+public class GuessTheWord {
+    
+    private static final String[] words = {"perfect", "country", "pumpkin", "special", "freedom", "picture", "husband", 
+        "monster", "seventy", "nothing", "sixteen", "morning", "journey", "history", "amazing", "dolphin", "teacher", 
+        "forever", "kitchen", "holiday", "welcome", "diamond", "courage", "silence", "someone", "science", "revenge", 
+        "harmony", "problem","awesome", "penguin", "youtube", "blanket", "musical", "thirteen", "princess", "assonant", 
+        "thousand", "language", "chipotle", "business", "favorite", "elephant", "children", "birthday", "mountain", 
+        "football", "kindness", "abdicate", "treasure", "strength", "together", "memories", "darkness", "sandwich", 
+        "calendar", "marriage", "building", "function", "squirrel", "tomorrow", "champion", "sentence", "daughter", 
+        "hospital", "identical", "chocolate", "beautiful", "happiness", "challenge", "celebrate", "adventure", 
+        "important", "consonant", "dangerous", "irregular", "something", "knowledge", "pollution", "wrestling", 
+        "pineapple", "adjective", "secretary", "ambulance", "alligator", "congruent", "community", "different", 
+        "vegetable", "influence", "structure", "invisible", "wonderful", "nutrition", "crocodile", "education", 
+        "beginning", "everything", "basketball", "weathering", "characters", "literature", "perfection", "volleyball", 
+        "homecoming", "technology", "maleficent", "watermelon", "appreciate", "relaxation", "abominable", "government", 
+        "strawberry", "retirement", "television", "silhouette", "friendship", "loneliness", "punishment", "university", 
+        "confidence", "restaurant", "abstinence", "blackboard", "discipline", "helicopter", "generation", "skateboard", 
+        "understand", "leadership", "revolution"};  
+    
+    // this method takes an integer as input and returns a radom String from the array above. 
+    // you can use it, but do NOT modified neither the method NOR the above array. 
+    public static String getRandomWord(int seed) {
+        Random gen = new Random(seed);
+        int randomIndex = gen.nextInt(words.length);
+        return words[randomIndex];
+    }
+    
+    //========================
+    // Enter your code below
+    
+    public static void main(String[] args) {
+
+        play(1);
+        
+
+        
+    }
+    public static boolean isValidGuess(char c){
+      //check if its lower case letter using ascii
+      if (97 <=c && c<= 122){
+        return true;
+      }
+      return false;
+    }
+    public static int[] generateArrayOfGuesses(String word){
+      //deteremine array size using word length
+      int[] arrayGuess= new int[word.length()];
+      
+      return arrayGuess;
+    }
+    public static boolean checkAndUpdate(String word, int[] guesses, char lastG){
+      //ineterate thru word to check if letters is in it
+     
+      //check false if reaches end
+      int wrongCount=0;
+      for (int i=0;i<word.length();i++){
+        char k = word.charAt(i);
+        if (k == lastG){
+          guesses[i]=1;
+        }else{
+          wrongCount+=1;
+        }
+        
+      }
+      if (wrongCount==guesses.length) {
+        return false;
+                
+      }
+     
+      //method returns true if all elements are 1
+      return true;
+
+    
+    }
+    public static String getWordToDisplay(String word,int[] guesses, char last){
+      //iterate through guesses and turn 0 to hyphen
+      String newWord="";
+      String[] guess= new String[guesses.length];
+      for (int i=0;i<guesses.length;i++){
+        String newLetter = "";
+        newLetter+=word.charAt(i);
+        if (guesses[i]==0){
+          guess[i]="-";
+          
+        }
+        //turn the 1 to their corresponding letter
+        if ( guesses[i]==1) {
+          guess[i]= newLetter;
+        }
+
+          
+        //iterate through word, if the char matches last then update array
+        if (word.charAt(i)==last){
+          
+          guess[i]= newLetter.toUpperCase();
+           
+        }
+          
+          
+      }
+      for (int n =0;n<word.length();n++){
+        newWord+=guess[n];
+      }
+
+      
+      return newWord;      
+      
+    }
+    public static boolean isWordGuessed(int[] guesses){
+      for (int i=0;i<guesses.length;i++){
+        if (guesses[i]!=1){
+          return false;
+        }
+      }
+      return true;
+    }
+    public static void play(int inp){
+      Scanner read = new Scanner(System.in);
+      
+      int lives = 10;
+      // create string using word picked
+      String wordPicked = getRandomWord(inp);
+      
+      int[] arrayGuesses = generateArrayOfGuesses(wordPicked);
+      System.out.println(wordPicked);
+      System.out.println("Welcome! Your secret word has "+wordPicked.length()+"letters. You have 10 lives to guess the entire word.");
+      System.out.println("You have "+ lives+"lives left. Please guess a letter");
+
+      //the program runs while lives greater than 0
+      while (lives >0){
+        String choice = read.nextLine();
+        
+        
+        if (choice.length()>1){
+          System.out.println("Your guess must be 1 letter only. Please try again");
+          choice = read.nextLine();
+        }
+
+        System.out.println("You have "+ lives+"lives left. Please guess a letter");
+        char letter = choice.charAt(0);
+        //use method isValid to verify if lowercase letter
+        if (!isValidGuess(letter)) {
+          System.out.println("Your guess must be a lower case letter. Please try again");
+          choice = read.nextLine();
+        
+        }
+
+        //Checks the input of Letter to see if it is present in wordPicked
+        //If it is, update the word and display the characters
+        if (checkAndUpdate(wordPicked, arrayGuesses, letter) ){
+        System.out.println(getWordToDisplay(wordPicked,arrayGuesses, letter));
+        System.out.println("Good job! The word contains the letter:" +letter+" Please guess your next letter");
+        }else{
+          //if it isnt, lose a life
+          lives -=1;
+          System.out.println("Wrong choice. You have "+lives+ "lives left. Please guess again.");
+          
+          letter =choice.charAt(0);
+          if (lives ==0){
+            System.out.println("Ohh no you ran out of lives! The secret word was:"+wordPicked);
+          }
+        }
+        //if all characters are guessed, game finished
+        if (isWordGuessed(arrayGuesses)){
+          System.out.println("YOU gussed the right word. The word was: " +wordPicked);
+          read.close();
+        }
+        
+     
+      }
+      
+      
+      
+
+    }
+
+    
+      
+      
+      
+     
+      
+      
+      
+    
+    
+    
+    
+
+  
+        
+      
+      
+      
+    
+}

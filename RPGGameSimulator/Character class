@@ -1,0 +1,143 @@
+//name: Christopher Cui
+//Student id: 260867703
+
+import java.util.Random;
+import java.util.ArrayList;
+public class Character {
+  private String name;
+  private double attackVal;
+  private double maxHealth;
+  private double currHealth;
+  private int wins;
+  private static ArrayList<Spell> spells = new ArrayList<Spell>();
+  
+  public Character(String n,double attack, double max, int w, ArrayList<Spell> s) { 
+    this.currHealth = max;
+    this.name = n;
+    this.attackVal = attack;
+    this.maxHealth = max;
+    this.wins = w;
+    
+    this.spells = s;
+  }
+  public Character(String n,double attack, double max, int w) { 
+    this.currHealth = max;
+    this.name = n;
+    this.attackVal = attack;
+    this.maxHealth = max;
+    this.wins = w;
+  }
+  public String getName(){
+    return this.name;
+  }
+  public double getAttackValue(){
+    return this.attackVal;
+  }
+  public double getMaxHealth(){
+    return this.maxHealth;
+  }
+  public double getCurrHealth(){
+    return this.currHealth;
+  }
+  public int getNumWins(){
+    return this.wins;
+  }
+  
+  public String toString(){
+    if (this.currHealth >0){
+    return(this.name+" "+ "Has "+this.currHealth+" health");
+    }else{
+      return(" ");
+    }
+  }
+  
+
+  public double getAttackDamage(int randoms){
+    //initialize the type Random numbergenerator
+    
+    Random numberGenerator = new Random(randoms);
+    //this generates a number between 0-0.99 
+    double multiplier = numberGenerator.nextDouble();
+    //since 3 digits from 7-9, multiple the random double by 3 and add 7 to it to put into range of 7-10 exclusive
+    
+    //multiplier = ((multiplier*3) +7)/10;
+    //get the value within the range 0.7 and 1
+    double mulValue = 0.7 + (1-0.7)*multiplier;
+    
+    double attackDamage = this.attackVal * mulValue;
+   // rangeMin + (rangeMax - rangeMin) * r.nextDouble();
+    return attackDamage;
+  }
+
+  
+  public double takeDamage(double damage){
+    //set current health by subtracting damage from it
+    this.currHealth-=damage;
+    return this.currHealth;
+  }
+  public void increaseWins(){
+    this.wins+=1;
+  }
+  
+  public static void setSpells(ArrayList<Spell> spl){
+    //copies each spell to the attribute ArrayList for the character
+    for (Spell s: spl){
+      spells.add(s);
+    }
+  }
+
+  public static void displaySpells(){
+    for (int i=0;i<spells.size();i++){
+      System.out.println(spells.get(i));
+    }
+  }
+  public double castSpell(String sName,int seeds){
+    //a boolean called find is set and initilzie to the value false
+    boolean find = false;
+    double damage = 0.0;
+
+    // iterate through the ArrayList spells
+    for (Spell sp: spells) {
+      //is equal to the String sName at the parameter (in lowercase)
+      if (sp.getName().equals(sName.toLowerCase())){
+
+        find = true;
+        //damage is then given a new value by using getDamage
+        //on the Spell sp of the ArrayList spells
+        damage = sp.getMagicDamage(seeds);
+        //if the damage is greater than 0
+        
+        if (damage > 0.0)
+        {
+          //that formats the double value assigned to damage to just two decimal places
+          String damageDealt = String.format("%.2f", damage);
+          System.out.println(this.name + " casted" + sName+ " for damage of " +    damageDealt);
+          //the following message is printed, stating the spell was casted
+          //the for loop is then stopped
+          break;
+        }
+      }
+    }
+    
+    //if false even after looped thru, then the player does not know the spell yet.
+    if (find == false)
+    {
+      //the follwing statement is printed, 
+      //stating the spell is not found within the ArrayList spell
+      System.out.println(name + " tried to cast " + sName + " but they don't know that spell");
+      return -1.0;
+    }
+    
+    return damage;
+  }
+  
+  
+        
+  
+    
+  public static void main(String[] args) { 
+  }
+
+  
+  
+}

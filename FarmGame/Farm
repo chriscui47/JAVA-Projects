@@ -1,0 +1,70 @@
+//name: Christopher Cui
+//student id: 260867703
+
+import java.util.Random;
+import java.util.Arrays;
+public class Farm {
+  private Sheep[] sheeps ;
+  private Dog sheepHerder;
+  private String nameFarm;
+  public Farm(String farm, Dog herd, Sheep[] sheeps) { 
+    this.nameFarm= farm;
+    this.sheepHerder = herd;
+    
+    
+    //initialize sheep Array belonging to this farm by copying the input array
+    int n = sheeps.length;
+//throw illegal argument exception if there are more sheep than dog can herd
+    if (n > sheepHerder.herd()){
+      throw new IllegalArgumentException("There are more sheep than the dog can herd");
+    }
+    
+     //initialize sheep Array belonging to this farm by copying the input array
+    Sheep[] copySheep = new Sheep[n];
+    for (int i =0;i<sheeps.length;i++){
+      copySheep[i] = sheeps[i];
+    }
+   //assign sheep array copy to the objects  attribute
+    this.sheeps=copySheep;
+  }
+
+//method that takes no inputs and returns name of the farm  
+  public String getName(){
+    return this.nameFarm;
+  }
+  //method that takes no input and returns the amount of sheep in the farm
+  public int getNumSheep(){
+    
+    return this.sheeps.length;
+  }
+  //method that prints the information of the farm
+  public void printFarm(){
+    System.out.println("Farm: "+this.nameFarm+"Dog: "+this.sheepHerder.getName());
+    
+    //for loop to print info for each sheep in the farm
+    for(int i=0;i<this.sheeps.length;i++){
+      System.out.print(sheeps[i].getName()+" ");
+      System.out.println(sheeps[i].getAge());
+    }
+  }
+  //returns amount of wool sheared from all the sheap in the farm
+  public double getWool(){
+    double totalSheared = 0;
+    for (int i=0;i<this.sheeps.length;i++){
+      totalSheared = totalSheared + this.sheeps[i].shear();
+      
+    }
+    
+    return totalSheared;
+    
+  }
+  public static void main(String[] args){
+    
+    
+  }
+  
+}
+  
+
+
+

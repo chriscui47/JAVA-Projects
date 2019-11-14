@@ -1,0 +1,54 @@
+//name: Christopher Cui
+//Student id: 260867703
+import java.util.Random;
+public class Sheep{
+  private String name;
+  private int age;
+  private boolean hasWool;
+  //initialize the type Random numbergenerator
+  private static Random numberGenerator = new Random(123);
+  
+  public static void main(String[] args) { 
+    
+  }
+  //constructor class
+  public Sheep(String n, int a){
+    this.hasWool = true;
+    this.name = n;
+    this.age = a;
+  }
+  //gets the name of the sheep and the method takes no input
+  public String getName(){
+    return this.name;
+  }
+  //method that takes no input and returns the age of the sheep
+  public int getAge(){
+    return this.age;
+  }
+  //method that shears the sheep and returns a double of the amount sheared
+  public double shear(){
+    
+    if (this.hasWool ){
+      //double has to between 6 and 10. 
+      
+      double number1 = numberGenerator.nextDouble(); //0- 0.999, bump the number between 6 and 10
+      //Since 4 digits from 6-9, multiple the random doube (0.99) by 4 and add 6 to put it into range of 6-10 exclusive
+      number1 = (number1*4) +6;
+      //set has wool to false after having had shaved
+      this.hasWool =false;
+      return number1;
+    }
+    //return 0 if no wool
+  else{
+    return 0;
+  }
+  
+  }
+
+
+  
+}
+  
+  
+  
+  

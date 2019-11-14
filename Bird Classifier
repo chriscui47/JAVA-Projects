@@ -1,0 +1,138 @@
+/**
+ * Auto Generated Java Class.
+ */
+//Name: Christopher Cui
+//Student id: 260867703
+public class Classifier {
+  
+  
+  public static void main(String[] args) { 
+    //initialize the variables for beak mm, claw mm, and color
+    int BEAK_MM = Integer.parseInt(args[0]);
+    int CLAW_MM= Integer.parseInt(args[1]);
+    String COLOR = args[2];
+    // string type of bird that prints
+    String TYPE_OF_BIRD = "The type of bird is ";
+    //call All 3 type methods that will concatonate the string of Type of bird A, B, or C to TYPE_OF_BIRD string if bird type matches criteria
+    
+    if (isTypeA(BEAK_MM,CLAW_MM,COLOR)){
+      TYPE_OF_BIRD +="A ";
+    }
+    if (isTypeB(BEAK_MM,CLAW_MM,COLOR)){
+      TYPE_OF_BIRD +="B ";
+    }
+    if (isTypeC(BEAK_MM,CLAW_MM,COLOR)){
+      TYPE_OF_BIRD +="C ";
+    }
+    if ( (isTypeA(BEAK_MM,CLAW_MM,COLOR) || isTypeB(BEAK_MM,CLAW_MM,COLOR) || isTypeC(BEAK_MM,CLAW_MM,COLOR) ) == false){
+      TYPE_OF_BIRD = "This bird is not of part of study";
+    }
+    //Print out the type of birds
+    System.out.println(TYPE_OF_BIRD);
+  }
+  //TYPE A method that returns true if bird matches criteria
+  public static boolean isTypeA(int beak,int claw, String color) {
+
+    //checks criteria of args input for each bird in the Typa A
+    if ((beak == 1)&& (claw ==0) && color.equalsIgnoreCase("Grey") ){
+      
+      return true;
+    }else if ( (beak==2) && claw ==1 && color.equalsIgnoreCase("Grey") ){
+    
+        return true;    
+    }else if (beak==3 && claw ==2 && color.equalsIgnoreCase("Grey") ){
+      
+      return true;
+    }else if (beak ==4 && claw ==3 && color.equalsIgnoreCase("Grey") ){
+     
+      return true;
+    }else if (beak==4 && claw ==4 && color.equalsIgnoreCase("Grey") ){
+     
+      return true;
+    }else if (beak ==5 && claw==4 && color.equalsIgnoreCase("Grey")){
+    
+      return true;
+    }
+    else{
+      return false;
+    }
+  }
+  //TYPE B BOOLEAN that returns true if bird matches criteria
+  public static boolean isTypeB(int beak,int claw, String color) {
+    if ((beak == 4)&& (claw ==4)&& color.equalsIgnoreCase("Grey") ){
+      
+      return true;
+    }else if ( (beak==4) && claw ==5 && color.equalsIgnoreCase("Grey") ){
+      
+        return true;    
+    }else if (beak==5 && claw ==6 && color.equalsIgnoreCase("Grey") ){
+      
+      return true;
+    }else if (beak ==5 && claw ==6 && color.equalsIgnoreCase("Blue") ){
+      return true;
+    }else if (beak==5 && claw ==7 && color.equalsIgnoreCase("Grey") ){
+      
+      return true;
+    }else if (beak ==5 && claw==7 && color.equalsIgnoreCase("Blue")){
+      
+      return true;
+    }else if (beak ==6 && claw ==8 && color.equalsIgnoreCase("Blue") ){
+      
+      return true;
+    }else if (beak==6 && claw ==9 && color.equalsIgnoreCase("Blue") ){
+      
+      return true;
+    }else if (beak ==7 && claw==10 && color.equalsIgnoreCase("Blue")){
+      
+      return true;
+    
+    }else if (beak ==8 && claw==11 && color.equalsIgnoreCase("Blue")){
+      
+      return true;
+    }
+    
+    else{
+      return false;
+    }
+      
+ }
+  
+  // type C returns true if bird matches class C criteria
+  public static boolean isTypeC(int beak,int claw, String color) {
+    if ((beak == 5)&& (claw ==6)&& color.equalsIgnoreCase("Blue") ){
+      
+      return true;
+    }else if ( (beak==5) && claw ==6 && color.equalsIgnoreCase("Green") ){
+     
+        return true;    
+    }else if (beak==5 && claw ==7 && color.equalsIgnoreCase("Blue") ){
+   
+      return true;
+    }else if (beak ==5 && claw ==7 && color.equalsIgnoreCase("Green") ){
+    
+      return true;
+    }else if (beak==6 && claw ==8 && color.equalsIgnoreCase("Green") ){
+     
+      return true;
+    }else if (beak ==6 && claw==9 && color.equalsIgnoreCase("Green")){
+ 
+      return true;
+    }else if (beak ==7 && claw ==10 && color.equalsIgnoreCase("Green") ){
+
+      return true;
+    }else if (beak==8 && claw ==11 && color.equalsIgnoreCase("Green") ){
+    
+      return true;
+    }else if (beak ==9 && claw==12 && color.equalsIgnoreCase("Green")){
+  
+      return true;
+    }
+    else{
+      return false;
+    }
+      
+ }
+  
+  
+  
+}

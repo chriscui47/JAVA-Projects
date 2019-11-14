@@ -1,0 +1,44 @@
+//student name: Christopher Cui
+//Student id: 260867703
+public class Dog {
+  private String name;
+  private String breed;
+  
+  
+  public static void main(String[] args) { 
+  }
+  //constructor class
+  public Dog(String n, String b){
+    this.name = n;
+    this.breed = b;
+    
+  }
+  //string that returns the name of the dog
+  public String getName(){
+    return (this.name);
+  }
+  
+  public int herd(){
+    //Want to ignore the cases
+    String ignoreCaseBreed = this.breed.toLowerCase();
+    //Use method contain to check if dog type is within the string. Example, White Collie returns true 
+    if (  ignoreCaseBreed.contains("collie")     ){
+      return 20;
+    }
+    else if ( (ignoreCaseBreed).contains("shepard")){
+      return 25;
+    }
+    //if contains either kelpie or teruven, return 30
+    else if( ignoreCaseBreed.contains("kelpie") || ignoreCaseBreed.contains("teruven") ){
+      return 30;
+    }else{
+      return 10;
+      
+    }
+    
+  }
+ 
+}
+
+
+  

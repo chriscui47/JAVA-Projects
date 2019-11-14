@@ -1,0 +1,149 @@
+
+//Name:Christopher Cui
+//Student id: 260867703
+
+
+import java.util.*;
+import java.io.*;
+import java.util.Random;
+public class BattleGame {
+  private static Random rand= new Random(123);
+ 
+  
+  
+  public BattleGame() { 
+  }
+  
+  
+  public static void playGame(String player, String monster, String sfileName) throws IOException {
+    ArrayList<Spell> charSpells = FileIO.readSpells(sfileName);
+    Character playerChar;
+    Character monsterChar;
+      //if the method returns null
+      if (charSpells == null){
+      System.out.println("The game will be played without spells");
+    }
+    try{
+    playerChar= FileIO.readCharacter(player);
+    //set the arraylist of spells to the players attribute of spells
+    playerChar.setSpells(charSpells);
+      
+    }catch (Exception e){
+      System.out.println("The game cannot be played because of invalid Character type input");
+      //ends method if any exception is raised
+      return ;
+    }
+
+    try{
+      monsterChar = FileIO.readCharacter(monster);
+    }catch (Exception e){
+      System.out.println("The game cannot be played because of invalid Character type input");
+      //ends method if any exception is raised
+      return ;
+    }
+    System.out.println("Player name:"+playerChar.getName() +"\n" +"Health: "+ playerChar.getCurrHealth()+ "\n"+ "Attack: "+ playerChar.getAttackValue()+"\n"+"Number of Wins: "+ playerChar.getNumWins() );
+    System.out.println("\n");
+    System.out.println("Player name:"+monsterChar.getName() +"\n" +"Health: "+ monsterChar.getCurrHealth()+ "\n"+ "Attack: "+ monsterChar.getAttackValue()+"\n"+"Number of Wins: "+ monsterChar.getNumWins() );
+    
+    //while currentHealth of the player & the currentHealth of the monster are above 0, we can play the game
+    
+    while (playerChar.getCurrHealth() >0 && monsterChar.getCurrHealth()>0){
+      //create scanner
+      Scanner scan = new Scanner(System.in);
+      
+      System.out.println("Enter a command");
+      String choice = scan.nextLine();
+      double attackDamageMonster;
+      double attackDamagePlayer;
+      int randomInt = rand.nextInt();
+      if(choice.equals("attack") ){
+        
+        //create attack damage value for the player and monster
+        attackDamagePlayer = playerChar.getAttackDamage(randomInt);
+        attackDamageMonster = monsterChar.getAttackDamage(randomInt);
+        
+        //apply the damages make by both the player and the monster
+        monsterChar.takeDamage(attackDamagePlayer);
+        playerChar.takeDamage(attackDamageMonster);
+        
+        String attackStrP = String.format("%1$.2f", attackDamagePlayer);
+        String attackStrM = String.format("%1$.2f", attackDamageMonster);
+        System.out.println(playerChar.getName()+" attacks for "+attackStrP+ "!");
+        System.out.println(monsterChar.getName()+ " attacks for "+attackStrM+ "!");
+        
+        System.out.println(playerChar);
+        System.out.println(monsterChar);
+        
+      }
+        else if (choice.equals("quit")){
+          System.out.println("Goodbye");
+          return;
+          //if the scanner input is neither attack or quit, assume the user is just trying to cast a spell
+          
+          
+        }else{
+        //by inputing the String command as the parameter
+        
+        playerChar.setSpells(charSpells);
+        
+        double damage = playerChar.castSpell(choice,rand.nextInt());
+        
+        //states that is damage is greater than 0
+        //if user casts a spell, monster still attacsk
+        attackDamageMonster = monsterChar.getAttackDamage(randomInt);
+        playerChar.takeDamage(attackDamageMonster);
+        String attackStrM = String.format("%1$.2f", attackDamageMonster);
+        System.out.println(monsterChar.getName()+ " attacks for "+attackStrM+ "!");
+        System.out.println(playerChar);
+        
+        if (damage > 0)
+        {
+          //a String called damageDone is made, 
+          //that formats the double value assigned to damage to just two decimal places
+          String damageDone = String.format("%.2f", damage);
+          
+          System.out.println(monsterChar.getName() + "takes " + damageDone + "damage");
+          
+        }else{
+          System.out.println(playerChar.getName()+" tried to cast" +choice+"  but failed");
+        }
+        //the monster Character then takes the damage, using the takeDamage in the Character class
+        monsterChar.takeDamage(damage);
+        //the monster's name and currentHealth are then printed
+        System.out.println(monsterChar.toString());
+        System.out.println();
+        }
+        //IF THE player dies, increase monster wins
+        if (playerChar.getCurrHealth()<=0){
+          
+          System.out.println(playerChar.getName()+ " was knocked out by " +monsterChar.getName());
+          monsterChar.increaseWins();
+          //write to monster file the amoutn of wins the mosnter has
+          System.out.println(monsterChar.getName()+ "has "+monsterChar.getNumWins()+ "wins");
+          FileIO.writeCharacter(monsterChar,"monster.txt");
+        }
+        //if monster dies, incresae player wins
+        if (monsterChar.getCurrHealth()<=0){
+          System.out.println("The monster was knocked out, Congratulations " +playerChar.getName());
+          //since the monster was knocked out, give player a win
+          playerChar.increaseWins();
+          System.out.println(playerChar.getName()+ "has "+playerChar.getNumWins()+ "wins");
+          //write to the player file the amount of wins the player has
+          
+          FileIO.writeCharacter(playerChar,"player.txt");
+          break;
+        }
+    }
+    
+  }
+  public static void main(String[] args) { 
+    try {
+      playGame("player.txt","monster.txt","spells.txt");
+    }catch (IOException e){
+      System.out.println("something went wrong");
+    }
+  }
+  
+  /* ADD YOUR CODE HERE */
+  
+}
